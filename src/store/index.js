@@ -33,6 +33,19 @@ export default new Vuex.Store({
         })
         .finally(() => commit('mutateIsLoading', false));
     },
+    getLocationsByName({ commit }, name) {
+      commit('mutateIsLoading', true);
+      return axios
+        .get(`${API_URL}/search/?query=${name}`)
+        .then((response) => {
+          commit('mutateGetLocations', response.data);
+          return Promise.resolve();
+        })
+        .catch(({ message }) => {
+          commit('mutateError', message);
+        })
+        .finally(() => commit('mutateIsLoading', false));
+    },
     getWeather({ commit }, id) {
       commit('mutateIsLoading', true);
       return axios
