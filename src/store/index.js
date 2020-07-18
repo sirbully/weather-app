@@ -14,8 +14,8 @@ export default new Vuex.Store({
     error: '',
   },
   getters: {
-    gettersInitLocations: (state) => state.locations,
-    gettersInitWeather: (state) => state.weather,
+    gettersLocations: (state) => state.locations,
+    gettersWeather: (state) => state.weather,
     gettersIsLoading: (state) => state.isLoading,
     gettersError: (state) => state.error,
   },
