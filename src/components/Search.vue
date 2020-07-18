@@ -1,12 +1,12 @@
 <template>
-  <div class="search-drawer">
-    <i class="material-icons close-icon" @click="$emit('close', false)">close</i>
+  <div class="search-drawer" :class="{ open: isOpen, close: !isOpen }">
+    <i class="material-icons close-icon" @click="closeHandler">close</i>
 
     <div class="search-form">
       <div class="search-bar">
         <label>
           <i class="material-icons">search</i>
-          <input id="location" type="text" placeholder="search location" />
+          <input v-model="location" type="text" placeholder="search location" />
         </label>
       </div>
       <div class="search-btn-wrap">
@@ -14,7 +14,10 @@
       </div>
     </div>
 
-    <div class="search-input"></div>
+    <div class="search-results">
+      <div>London</div>
+      <div>Barcelona</div>
+    </div>
   </div>
 </template>
 
@@ -27,7 +30,18 @@ export default {
     mdbBtn,
   },
   props: {
-    open: Boolean,
+    isOpen: Boolean,
+  },
+  data() {
+    return {
+      location: '',
+    };
+  },
+  methods: {
+    closeHandler() {
+      this.location = '';
+      this.$emit('close', false);
+    },
   },
 };
 </script>
@@ -93,6 +107,32 @@ export default {
 
       &::placeholder {
         color: $darkgrey;
+      }
+    }
+  }
+}
+
+.search-results {
+  margin-top: 48px;
+  color: $white;
+
+  div {
+    padding: 24px 16px;
+    margin-bottom: 16px;
+    box-sizing: border-box !important;
+    position: relative;
+
+    &:hover {
+      box-shadow: 0 0 0 1px $grey;
+      cursor: pointer;
+
+      &::after {
+        content: "keyboard_arrow_right";
+        font-family: "Material Icons";
+        font-size: 24px;
+        position: absolute;
+        right: 16px;
+        color: $grey;
       }
     }
   }
