@@ -25,8 +25,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap");
-
 .big-weather {
   display: flex;
   flex-direction: column;
