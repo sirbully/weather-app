@@ -6,7 +6,7 @@
         <slot name="value"></slot>
       </p>
       <div class="direction" :class="{'no-display': !direction}">
-        <i class="material-icons">navigation</i>
+        <i class="material-icons" :style="compass">navigation</i>
         <p>{{direction}}</p>
       </div>
       <div class="percent" :class="{'no-display': !percent}">
@@ -31,11 +31,15 @@ export default {
   props: {
     title: String,
     direction: String,
-    percent: String,
+    directionNum: Number,
+    percent: Number,
   },
   computed: {
     percentage() {
       return { width: `${this.percent}%` };
+    },
+    compass() {
+      return { transform: `rotate(${this.directionNum}deg)` };
     },
   },
 };
@@ -88,7 +92,6 @@ export default {
       background: rgba(255, 255, 255, 0.3);
       margin-right: 18px;
       border-radius: 100%;
-      transform: rotate(-150deg);
       font-size: 16px;
     }
 
