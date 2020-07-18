@@ -3,7 +3,6 @@ import Vuex from 'vuex';
 import axios from 'axios';
 
 const API_URL = 'https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location';
-const header = { headers: { Origin: null } };
 
 Vue.use(Vuex);
 
@@ -17,16 +16,16 @@ export default new Vuex.Store({
   getters: {
     gettersInitLocations: (state) => state.locations,
     gettersInitWeather: (state) => state.weather,
-    gettrsIsLoading: (state) => state.isLoading,
+    gettersIsLoading: (state) => state.isLoading,
     gettersError: (state) => state.error,
   },
   actions: {
-    getLocations({ commit }, lattlong) {
+    getLocations({ commit }, coords) {
       commit('mutateIsLoading', true);
       return axios
-        .get(`${API_URL}/search/?lattlong=${lattlong[0]},${lattlong[1]}`, header)
+        .get(`${API_URL}/search/?lattlong=${coords.latitude},${coords.longitude}`)
         .then((response) => {
-          commit('mutateGetLocation', response.data);
+          commit('mutateGetLocations', response.data);
           return Promise.resolve();
         })
         .catch(({ message }) => {
@@ -37,7 +36,7 @@ export default new Vuex.Store({
     getWeather({ commit }, id) {
       commit('mutateIsLoading', true);
       return axios
-        .get(`${API_URL}/${id}`, header)
+        .get(`${API_URL}/${id}`)
         .then((response) => {
           commit('mutateGetWeather', response.data);
           return Promise.resolve();
