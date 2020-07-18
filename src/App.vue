@@ -1,39 +1,76 @@
 <template>
   <div class="app">
     <div class="sidebar">
-      <div class="sidebar-actions">
-        <mdb-btn class="sidebar-search">Search for places</mdb-btn>
-        <mdb-tooltip material trigger="hover" :options="{placement: 'bottom'}">
-          <span slot="tip">Current location</span>
-          <mdb-btn slot="reference" class="sidebar-gps">
-            <i class="material-icons">gps_fixed</i>
-          </mdb-btn>
-        </mdb-tooltip>
-      </div>
+      <div class="sidebar-wrap">
+        <search :isOpen="isSearch" @close="toggleSearch" />
+        <div class="sidebar-actions">
+          <mdb-btn class="sidebar-search" @click="toggleSearch(true)">Search for places</mdb-btn>
+          <mdb-tooltip material trigger="hover" :options="{placement: 'bottom'}">
+            <span slot="tip">Current location</span>
+            <mdb-btn slot="reference" class="sidebar-gps">
+              <i class="material-icons">gps_fixed</i>
+            </mdb-btn>
+          </mdb-tooltip>
+        </div>
 
-      <big-weather temperature="15" weather="Shower" />
+        <big-weather temperature="15" weather="Shower" />
 
-      <div class="weather-today-details">
-        <p class="weather-date">
-          Today
-          <span>•</span>
-          {{today}}
-        </p>
-        <p class="weather-location">
-          <i class="material-icons">location_on</i>
-          {{location}}
-        </p>
+        <div class="weather-today-details">
+          <p class="weather-date">
+            Today
+            <span>•</span>
+            {{today}}
+          </p>
+          <p class="weather-location">
+            <i class="material-icons">location_on</i>
+            {{location}}
+          </p>
+        </div>
       </div>
     </div>
     <div class="main">
-      <div class="deg-fan"></div>
+      <div class="cel-fan">
+        <mdb-btn class="celsius" @click="toggleFormat(true)">℃</mdb-btn>
+        <mdb-btn class="farenheight" @click="toggleFormat(false)">℉</mdb-btn>
+      </div>
 
       <div class="weather-forecast">
-        <div class="col-sm-6">1</div>
-        <div class="col-sm-6">2</div>
-        <div class="col-sm-6">3</div>
-        <div class="col-sm-6">4</div>
-        <div class="col-sm-6">5</div>
+        <small-weather :date="new Date()" weather="Sleet" max="16" min="11" />
+        <small-weather :date="new Date()" weather="Sleet" max="16" min="11" />
+        <small-weather :date="new Date()" weather="Sleet" max="16" min="11" />
+        <small-weather :date="new Date()" weather="Sleet" max="16" min="11" />
+        <small-weather :date="new Date()" weather="Sleet" max="16" min="11" />
+      </div>
+
+      <h3>Today's Highlights</h3>
+      <div class="weather-highlight">
+        <card title="Wind status" direction="WSW">
+          <template v-slot:value>
+            7
+            <span>mph</span>
+          </template>
+        </card>
+
+        <card title="Humidity" percent="84">
+          <template v-slot:value>
+            84
+            <span>%</span>
+          </template>
+        </card>
+
+        <card title="Visibility">
+          <template v-slot:value>
+            6,4
+            <span>miles</span>
+          </template>
+        </card>
+
+        <card title="Air Pressure ">
+          <template v-slot:value>
+            998
+            <span>mb</span>
+          </template>
+        </card>
       </div>
     </div>
   </div>
@@ -44,19 +81,26 @@ import {
   mdbTooltip, mdbBtn,
 } from 'mdbvue';
 import { format } from 'date-fns';
+import Search from '@/components/Search.vue';
 import BigWeather from '@/components/BigWeather.vue';
+import SmallWeather from '@/components/SmallWeather.vue';
+import Card from '@/components/Card.vue';
 
 export default {
   name: 'App',
   components: {
     mdbTooltip,
     mdbBtn,
+    Search,
     BigWeather,
+    SmallWeather,
+    Card,
   },
   data() {
     return {
       dateNow: Date.now(),
       location: 'Manila',
+      isSearch: false,
     };
   },
   computed: {
@@ -64,11 +108,17 @@ export default {
       return format(this.dateNow, 'E, d MMM');
     },
   },
+  methods: {
+    toggleSearch(isOpen) {
+      this.isSearch = isOpen;
+    },
+  },
 };
 </script>
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Raleway:wght@500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap");
 
 * {
   font-family: Raleway, sans-serif;
@@ -76,34 +126,29 @@ export default {
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
   margin: 0;
   padding: 0;
   color: $white;
   font-size: 1rem;
 }
 
+input,
 button {
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  font-size: 1rem;
   border: none;
   outline: none;
-  font-size: 1rem;
 }
 
-.app {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0;
+button {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 // SIDEBAR
 .sidebar {
-  position: relative;
-  min-height: calc(100vh - 94px);
-  flex: 0 0 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  position: fixed;
+  height: calc(100vh - 84px);
+  width: 400px;
   padding: 42px;
   color: $grey;
   background: $primary;
@@ -120,6 +165,14 @@ button {
     z-index: 0;
     opacity: 0.05;
     background: $primary url("~@/assets/Cloud-background.png") no-repeat 50% 15%;
+  }
+
+  .sidebar-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -171,30 +224,59 @@ button {
 // MAIN
 .main {
   min-height: calc(100vh - 84px);
+  margin-left: 484px;
   padding: 42px;
-  flex: 1;
   background: $dark;
+
+  h3 {
+    margin: 40px 14px 24px;
+    font-size: 24px;
+    font-weight: 700;
+  }
 }
 
-.weather-forecast {
+.cel-fan {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 40px;
+  padding: 0 14px;
+
+  .celsius,
+  .farenheight {
+    font-family: "Noto Sans JP", sans-serif;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 100%;
+    background: #585676;
+    color: $white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &.active {
+      background: $white;
+      color: #110e3c;
+    }
+  }
+
+  .celsius {
+    margin-right: 12px;
+  }
+}
+
+.weather-forecast,
+.weather-highlight {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  margin-right: -15px;
-  margin-left: -15px;
-
-  div {
-    position: relative;
-    width: 100%;
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
 }
 
 @media (max-width: 576px) {
   .sidebar {
-    min-height: calc(100vh - 48px);
-    flex: 1 1 100%;
+    position: static;
+    height: calc(100vh - 48px);
+    width: calc(100vw - 48px);
     padding: 24px;
 
     &::before {
@@ -204,15 +286,7 @@ button {
 
   .main {
     padding: 24px;
-  }
-}
-
-@media (min-width: 992px) {
-  .weather-forecast {
-    div {
-      flex: 0 0 20%;
-      max-width: 20%;
-    }
+    margin-left: 0px;
   }
 }
 </style>
