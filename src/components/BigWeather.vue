@@ -2,7 +2,7 @@
   <div class="big-weather">
     <img :src="weatherImg" :alt="weather" />
     <h1>
-      {{temperature}}
+      {{wholeTemp}}
       <span>°C</span>
     </h1>
     <h3>{{weather}}</h3>
@@ -13,10 +13,13 @@
 export default {
   name: 'BigWeather',
   props: {
-    temperature: String,
+    temperature: Number,
     weather: String,
   },
   computed: {
+    wholeTemp() {
+      return Math.round(this.temperature);
+    },
     weatherImg() {
       return `../assets/${this.weather.split(' ').join('')}.png`;
     },
