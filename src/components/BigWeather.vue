@@ -3,7 +3,7 @@
     <img :src="weatherImg" :alt="weather" />
     <h1>
       {{wholeTemp}}
-      <span>°C</span>
+      <span>°{{isCelsius ? 'C' : 'F'}}</span>
     </h1>
     <h3>{{weather}}</h3>
   </div>
@@ -15,6 +15,7 @@ export default {
   props: {
     temperature: Number,
     weather: String,
+    isCelsius: Boolean,
   },
   computed: {
     wholeTemp() {

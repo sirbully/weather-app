@@ -6,8 +6,8 @@
         <img :src="weatherImg" alt="weather" />
       </div>
       <div class="max-min-temp">
-        <span max="max">{{Math.round(max)}}°C</span>
-        <span class="min">{{Math.round(min)}}°C</span>
+        <span max="max">{{Math.round(max)}}°{{isCelsius ? 'C' : 'F'}}</span>
+        <span class="min">{{Math.round(min)}}°{{isCelsius ? 'C' : 'F'}}</span>
       </div>
     </div>
   </div>
@@ -21,6 +21,7 @@ export default {
   props: {
     date: Date,
     weather: String,
+    isCelsius: Boolean,
     max: Number,
     min: Number,
   },
