@@ -22,6 +22,8 @@
     <div class="search-results">
       <spinner v-if="loading"></spinner>
 
+      <p v-else-if="locations.length === 0">No results</p>
+
       <div
         v-else
         v-for="location in locations"
@@ -152,6 +154,11 @@ export default {
   &::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background: $grey;
+  }
+
+  p {
+    color: $grey;
+    text-align: center;
   }
 
   div {
