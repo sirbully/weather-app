@@ -200,6 +200,7 @@ export default {
     },
     handleClickLocation(id) {
       this.isSearch = false;
+      this.errorStr = '';
 
       this.getWeather(id);
     },
