@@ -10,6 +10,7 @@
           @clickLocation="handleClickLocation"
           @searchLocation="handleSearchLocation"
         />
+
         <div class="sidebar-actions">
           <mdb-btn class="sidebar-search" @click="toggleSearch(true)">Search for places</mdb-btn>
           <mdb-tooltip material trigger="hover" :options="{placement: 'bottom'}">
@@ -45,7 +46,7 @@
           </p>
           <p class="weather-location">
             <i class="material-icons">location_on</i>
-            {{weather.title && !loading ? weather.title : 'Loading...'}}
+            {{weather.title && !loading && !errorStr ? weather.title : 'Loading...'}}
           </p>
         </div>
       </div>
