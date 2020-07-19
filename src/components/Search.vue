@@ -10,37 +10,59 @@
         </label>
       </div>
       <div class="search-btn-wrap">
-        <mdb-btn class="search-btn">Search</mdb-btn>
+        <mdb-btn class="search-btn" @click="searchLocationHandler">Search</mdb-btn>
       </div>
     </div>
 
     <div class="search-results">
-      <div>London</div>
-      <div>Barcelona</div>
+      <spinner v-if="loading"></spinner>
+
+      <div
+        v-else
+        v-for="location in locations"
+        :key="location.woeid"
+        @click="$emit('clickLocation', location.woeid)"
+      >{{location.title}}</div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { mdbBtn } from 'mdbvue';
+import Spinner from '@/components/RoundSpinner.vue';
 
 export default {
   name: 'Search',
   components: {
     mdbBtn,
+    Spinner,
   },
   props: {
     isOpen: Boolean,
+    locations: Array,
   },
   data() {
     return {
       location: '',
     };
   },
+  computed: {
+    ...mapGetters({
+      loading: 'gettersIsLoading',
+    }),
+  },
   methods: {
     closeHandler() {
       this.location = '';
       this.$emit('close', false);
+    },
+    searchLocationHandler() {
+      if (this.location !== '') {
+        this.$emit('searchLocation', this.location);
+      } else {
+        alert('Input cannot be empty!');
+      }
     },
   },
 };
@@ -113,8 +135,14 @@ export default {
 }
 
 .search-results {
-  margin-top: 48px;
+  margin: 48px 0;
+  padding: 1px;
   color: $white;
+  overflow: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   div {
     padding: 24px 16px;
