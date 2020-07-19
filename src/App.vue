@@ -20,7 +20,7 @@
           </mdb-tooltip>
         </div>
 
-        <div v-if="!weather.consolidated_weather || loading" class="sidebar-error">
+        <div v-if="!weather.consolidated_weather || loading || errorStr" class="sidebar-error">
           <i class="material-icons">cloud_off</i>
           <spinner v-if="(!weather.consolidated_weather || loading) && !errorStr"></spinner>
           <div v-if="errorStr">
@@ -29,7 +29,7 @@
           </div>
         </div>
 
-        <div v-if="weather.consolidated_weather && !loading">
+        <div v-if="weather.consolidated_weather && !loading && !errorStr">
           <big-weather
             :temperature="inCelsius ? weather.consolidated_weather[0].the_temp : toFahrenheit(weather.consolidated_weather[0].the_temp)"
             :weather="weather && weather.consolidated_weather[0].weather_state_name"
