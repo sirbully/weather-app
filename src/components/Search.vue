@@ -6,11 +6,16 @@
       <div class="search-bar">
         <label>
           <i class="material-icons">search</i>
-          <input v-model="location" type="text" placeholder="search location" />
+          <input
+            v-model="location"
+            type="text"
+            placeholder="search location"
+            @keyup.enter="searchSubmitHandler"
+          />
         </label>
       </div>
       <div class="search-btn-wrap">
-        <mdb-btn class="search-btn" @click="searchLocationHandler">Search</mdb-btn>
+        <mdb-btn class="search-btn" @click="searchSubmitHandler">Search</mdb-btn>
       </div>
     </div>
 
@@ -57,7 +62,7 @@ export default {
       this.location = '';
       this.$emit('close', false);
     },
-    searchLocationHandler() {
+    searchSubmitHandler() {
       if (this.location !== '') {
         this.$emit('searchLocation', this.location);
       } else {
@@ -138,10 +143,15 @@ export default {
   margin: 48px 0;
   padding: 1px;
   color: $white;
-  overflow: scroll;
+  overflow: auto;
 
   &::-webkit-scrollbar {
-    display: none;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: $grey;
   }
 
   div {

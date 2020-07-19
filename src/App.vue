@@ -8,7 +8,7 @@
           :locations="locations"
           @close="toggleSearch"
           @clickLocation="handleClickLocation"
-          @handleSearch="handleSearchLocation"
+          @searchLocation="handleSearchLocation"
         />
         <div class="sidebar-actions">
           <mdb-btn class="sidebar-search" @click="toggleSearch(true)">Search for places</mdb-btn>
@@ -22,7 +22,7 @@
 
         <div v-if="!weather.consolidated_weather || loading" class="sidebar-error">
           <i class="material-icons">cloud_off</i>
-          <spinner v-if="!weather.consolidated_weather || loading"></spinner>
+          <spinner v-if="(!weather.consolidated_weather || loading) && !errorStr"></spinner>
           <div v-if="errorStr">
             <h3>Oops!</h3>
             <p>Something went wrong!</p>
@@ -45,14 +45,14 @@
           </p>
           <p class="weather-location">
             <i class="material-icons">location_on</i>
-            {{weather.title ? weather.title : 'Loading...'}}
+            {{weather.title && !loading ? weather.title : 'Loading...'}}
           </p>
         </div>
       </div>
     </div>
 
     <div class="main">
-      <loader v-if="!weather.consolidated_weather || loading"></loader>
+      <loader v-if="(!weather.consolidated_weather || loading) && !errorStr"></loader>
 
       <div v-if="errorStr" class="main-error">
         <h2>Location Not Found</h2>
@@ -180,7 +180,9 @@ export default {
   },
   watch: {
     locations(newVal) {
-      this.getWeather(newVal[0].woeid);
+      if (!this.isSearch) {
+        this.getWeather(newVal[0].woeid);
+      }
     },
   },
   methods: {
@@ -194,7 +196,7 @@ export default {
       return ((num * 9) / 5) + 32;
     },
     handleSearchLocation(name) {
-      this.getLocationsByName(name);
+      this.getLocationsByName(name.split(' ').join('+'));
     },
     handleClickLocation(id) {
       this.isSearch = false;
@@ -371,7 +373,7 @@ button {
 
   .main-error {
     width: 100%;
-    height: calc(100vh - 84px);
+    height: calc(100vh - 172px);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -381,6 +383,7 @@ button {
       font-size: 54px;
       font-weight: 700;
       margin-bottom: 5px;
+      text-align: center;
     }
   }
 
