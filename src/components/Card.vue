@@ -71,6 +71,7 @@ export default {
     font-size: 64px;
     font-weight: 700;
     margin: 0 0 20px;
+    text-align: center;
 
     span {
       font-size: 36px;

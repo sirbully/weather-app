@@ -45,6 +45,7 @@ export default {
 }
 
 .forecast {
+  min-height: 175px;
   margin: 14px 14px;
   padding: 18px 22px;
   background: $primary;
