@@ -3,7 +3,13 @@
   <div class="app">
     <div class="sidebar">
       <div class="sidebar-wrap">
-        <search :isOpen="isSearch" :locations="locations" @close="toggleSearch" />
+        <search
+          :isOpen="isSearch"
+          :locations="locations"
+          @close="toggleSearch"
+          @clickLocation="handleClickLocation"
+          @handleSearch="handleSearchLocation"
+        />
         <div class="sidebar-actions">
           <mdb-btn class="sidebar-search" @click="toggleSearch(true)">Search for places</mdb-btn>
           <mdb-tooltip material trigger="hover" :options="{placement: 'bottom'}">
@@ -187,6 +193,14 @@ export default {
     toFahrenheit(num) {
       return ((num * 9) / 5) + 32;
     },
+    handleSearchLocation(name) {
+      this.getLocationsByName(name);
+    },
+    handleClickLocation(id) {
+      this.isSearch = false;
+
+      this.getWeather(id);
+    },
     getCurrentLocation() {
       if (!('geolocation' in navigator)) {
         this.errorStr = 'Location services is not available.';
@@ -207,6 +221,7 @@ export default {
     },
     ...mapActions({
       getLocations: 'getLocations',
+      getLocationsByName: 'getLocationsByName',
       getWeather: 'getWeather',
     }),
   },
