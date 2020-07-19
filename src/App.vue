@@ -63,7 +63,7 @@
         </ul>
       </div>
 
-      <div v-if="weather.consolidated_weather && !loading">
+      <div v-if="weather.consolidated_weather && !loading && !errorStr">
         <div class="cel-fan">
           <mdb-btn
             type="button"
