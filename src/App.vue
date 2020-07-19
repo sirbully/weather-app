@@ -286,7 +286,7 @@ button {
     div {
       text-align: center;
 
-      h2 {
+      h3 {
         font-size: 60px;
         font-weight: 700;
         margin-bottom: 5px;
