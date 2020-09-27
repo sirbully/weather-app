@@ -1,4 +1,4 @@
-# Weather App Challenge (VueJS)
+# Weather App Challenge (Vue 2)
 
 Available on [Dev Challenges](https://devchallenges.io/challenges/TtUjDt19eIHxNQ4n5jps)
 
